@@ -3,6 +3,8 @@
 namespace Zahav\ZahavLaravel;
 
 use Illuminate\Support\ServiceProvider;
+use Zahav\ZahavLaravel\Trader;
+use Zahav\ZahavLaravel\Commands\WorkCommand;
 
 class ZahavServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,12 @@ class ZahavServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/coinspot.php' => config_path('coinspot.php'),
         ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                WorkCommand::class
+            ]);
+        }
     }
 
     /**
@@ -26,6 +34,10 @@ class ZahavServiceProvider extends ServiceProvider
     public function register()
     {
         $this->configure();
+
+        $this->app->bind('zahav', function () {
+            return new Trader();
+        });
     }
 
     /**
