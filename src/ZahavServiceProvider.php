@@ -13,7 +13,9 @@ class ZahavServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->publishes([
+            __DIR__.'/../config/coinspot.php' => config_path('coinspot.php'),
+        ]);
     }
 
     /**
@@ -36,9 +38,5 @@ class ZahavServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/coinspot.php', 'coinspot'
         );
-
-        $this->app->singleton(Coinspot::class, function ($app) {
-            return new Coinspot(config('coinspot'));
-        });
     }
 }

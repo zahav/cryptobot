@@ -9,11 +9,12 @@ return [
     |
     | Here you may specify the url for our API requests to Coinspot.
     | Easily configurable if we need to update to the latest API version in the Coinspot Service Provider.
-    | Public: https://www.coinspot.com.au/pubapi
-	| Authenticated: https://www.coinspot.com.au/pubapi
+    | Public: https://www.coinspot.com.au/pubapi/
+    | Authenticated: https://www.coinspot.com.au/api/
+    |
     */
 
-    'url' => env('COINSPOT_HOST', 'https://www.coinspot.com.au/api'),
+    'url' => env('COINSPOT_HOST', 'https://www.coinspot.com.au/api/'),
 
     /*
     |--------------------------------------------------------------------------

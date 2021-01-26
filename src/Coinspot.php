@@ -49,6 +49,19 @@ class Coinspot
     }
 
     /**
+     * List the latest prices for a coin.
+     * Example value 'BTC', 'LTC', 'DOGE'
+     */
+    public function latestPrices($coinType)
+    {
+        $coinType = strtolower($coinType);
+        $client = new Client(['base_uri' => 'https://www.coinspot.com.au/pubapi/']);
+        $response = $client->request('GET', 'latest');
+        $response = json_decode($response->getBody());
+        return $response->prices->$coinType;
+    }
+
+    /**
      * List the open orders on the exchange.
      * Example value 'BTC', 'LTC', 'DOGE'
      * 
@@ -212,13 +225,11 @@ class Coinspot
                     'key' => $this->api_key,
                     'sign' => $this->signature($data)
                 ],
-                'json' => [
-                    'nonce' => $data['nonce']
-                ]
+                'json' => $data
             ]);
 
             if ($response->getReasonPhrase() == 'OK') {
-                return json_decode($response->getBody());
+                return json_decode($response->getBody(), true);
             }
             else {
                 return "No results";
