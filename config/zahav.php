@@ -16,4 +16,28 @@ return [
 
     'strategy' => env('ZAHAV_STRATEGY', 'conservative'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Purchase Amount
+    |--------------------------------------------------------------------------
+    |
+    | This option sets the amount of coins you want to buy for each trade.
+    | The max precision is 8 decimal places
+    |
+    */
+
+    'buyAmount' => env('ZAHAV_BUY_AMOUNT', 0),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sale Amount
+    |--------------------------------------------------------------------------
+    |
+    | This option sets the amount of coins you want to sell for each trade.
+    | The max precision is 8 decimal places
+    |
+    */
+
+    'sellAmount' => env('ZAHAV_SELL_AMOUNT', 0),
+
 ];

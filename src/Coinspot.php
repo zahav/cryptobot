@@ -120,7 +120,7 @@ class Coinspot
      * Example value 'BTC', 'LTC', 'DOGE'
      * 
      * @param  String  $coinType
-     * @param  Int  $amoount
+     * @param  Int  $amount
      */
     public function quickSell($coinType, $amount)
     {
