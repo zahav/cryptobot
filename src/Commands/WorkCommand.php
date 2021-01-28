@@ -34,12 +34,14 @@ class WorkCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return Int
      */
     public function handle()
     {
-        Zahav::start();
+       $this->info('Starting the crypto trading bot...');
 
-        $this->info('Starting the crypto trading bot...');
+       Zahav::start();
+
+       return 1;
     }
 }

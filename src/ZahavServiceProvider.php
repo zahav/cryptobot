@@ -15,15 +15,8 @@ class ZahavServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/coinspot.php' => config_path('coinspot.php'),
-        ]);
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                WorkCommand::class
-            ]);
-        }
+        $this->registerCommands();
+        $this->registerPublishing();
     }
 
     /**
@@ -50,5 +43,37 @@ class ZahavServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/coinspot.php', 'coinspot'
         );
+    }
+
+    /**
+     * Register the package commands.
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                WorkCommand::class
+            ]);
+        }
+    }
+
+    /**
+     * Register the package's publishable resources.
+     *
+     * @return void
+     */
+    protected function registerPublishing()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/coinspot.php' => config_path('coinspot.php'),
+            ]);
+
+            $this->publishes([
+                __DIR__.'/../config/zahav.php' => config_path('zahav.php'),
+            ]);
+        }
     }
 }

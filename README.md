@@ -9,7 +9,7 @@ It follows a conservative trading strategy and supports the [Coinspot](https://w
 Add zahav/zahav-laravel to your composer.json
 
 ```php
-composer require "zahav/zahav-laravel": "dev-main"
+composer require "zahav/zahav-laravel"
 ```
 
 Register our service provider in `config/app.php`, within the `providers` array.
@@ -28,7 +28,7 @@ To use the configured Zahav client, import the facade each time:
 use Zahav\ZahavLaravel\Facades\Zahav;
 ```
 
-Optionally, you can register an alias in config/app.php:
+Optionally, you can register an alias in `config/app.php`:
 
 ```php
 'aliases' => [
