@@ -7,6 +7,13 @@ use Zahav\ZahavLaravel\Coinspot;
 class Trader
 {
     /**
+     * The Coinspot instance.
+     *
+     * @var Zahav\ZahavLaravel\Coinspot
+     */
+    protected $coinspot;
+
+    /**
      * The trading strategy.
      *
      * @var string
@@ -36,6 +43,7 @@ class Trader
         $this->strategy = config('zahav.strategy');
         $this->buyAmount = (float)config('zahav.buyAmount');
         $this->sellAmount = (float)config('zahav.sellAmount');
+        $this->coinspot = new Coinspot(config('coinspot'));
     }
 
     public function start()
@@ -58,53 +66,49 @@ class Trader
 
     private function conservative()
     {
-        $coinspot = new Coinspot(config('coinspot'));
-        $latest = (float)$coinspot->latestPrices('BTC')->last;
+        $latest = (float)$this->coinspot->latestPrices('BTC')->last;
 
         $buyPrice = $latest * ((1000-5) / 1000);
         $sellPrice = $latest * ((1000+5) / 1000);
 
         if ($this->canTrade()) {
-            $coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
-            sleep(10);
-            $coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
+            $this->coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
+
+            $this->coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
         }
     }
 
     private function moderate()
     {
-        $coinspot = new Coinspot(config('coinspot'));
-        $latest = (float)$coinspot->latestPrices('BTC')->last;
+        $latest = (float)$this->coinspot->latestPrices('BTC')->last;
 
         $buyPrice = $latest * ((100-1) / 100);
         $sellPrice = $latest * ((100+1) / 100);
 
         if ($this->canTrade()) {
-            $coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
-            sleep(10);
-            $coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
+            $this->coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
+
+            $this->coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
         }
     }
 
     private function aggressive()
     {
-        $coinspot = new Coinspot(config('coinspot'));
-        $latest = (float)$coinspot->latestPrices('BTC')->last;
+        $latest = (float)$this->coinspot->latestPrices('BTC')->last;
 
         $buyPrice = $latest * ((100-2) / 100);
         $sellPrice = $latest * ((100+2) / 100);
 
         if ($this->canTrade()) {
-            $coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
-            sleep(10);
-            $coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
+            $this->coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
+
+            $this->coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
         }
     }
 
     private function canTrade()
     {
-        $coinspot = new Coinspot(config('coinspot'));
-        $balance = $coinspot->myBalances()['balance'];
+        $balance = $this->coinspot->myBalances()['balance'];
 
         $availableFunds = $balance['aud'] >= $this->buyAmount ?: false;
         $availableCoins = $balance['btc'] >= $this->sellAmount ?: false;

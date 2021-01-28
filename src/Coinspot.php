@@ -229,6 +229,7 @@ class Coinspot
             ]);
 
             if ($response->getReasonPhrase() == 'OK') {
+                sleep(3); // Avoid rate limiting
                 return json_decode($response->getBody(), true);
             }
             else {
