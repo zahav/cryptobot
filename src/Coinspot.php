@@ -131,12 +131,31 @@ class Coinspot
     }
 
     /**
-     * Show a list of wallet balances for each coin.
+     * Show a list of total wallet balances for each coin.
      * 
      */
     public function myBalances()
     {
         return $this->request('my/balances');
+    }
+
+    /**
+     * Show a list of available wallet balances for each coin.
+     * These values are reduced when there are open orders on the exchange.
+     *
+     */
+    public function availableBalances()
+    {
+        $totalBalance = $this->myBalances();
+        $openOrders = $this->myOrders();
+
+        $buyOrders = collect($openOrders['buyorders'])->sum('total');
+        $sellOrders = collect($openOrders['sellorders'])->sum('amount');
+
+        $availableBalance['aud'] = $totalBalance['balance']['aud'] - $buyOrders;
+        $availableBalance['btc'] = $totalBalance['balance']['btc'] - $sellOrders;
+
+        return $availableBalance;
     }
 
     /**

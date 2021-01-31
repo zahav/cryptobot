@@ -71,9 +71,8 @@ class Trader
         $buyPrice = $latest * ((1000-5) / 1000);
         $sellPrice = $latest * ((1000+5) / 1000);
 
-        if ($this->canTrade()) {
+        if ($this->canTrade($buyPrice)) {
             $this->coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
-
             $this->coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
         }
     }
@@ -85,9 +84,8 @@ class Trader
         $buyPrice = $latest * ((100-1) / 100);
         $sellPrice = $latest * ((100+1) / 100);
 
-        if ($this->canTrade()) {
+        if ($this->canTrade($buyPrice)) {
             $this->coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
-
             $this->coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
         }
     }
@@ -99,18 +97,17 @@ class Trader
         $buyPrice = $latest * ((100-2) / 100);
         $sellPrice = $latest * ((100+2) / 100);
 
-        if ($this->canTrade()) {
+        if ($this->canTrade($buyPrice)) {
             $this->coinspot->buyOrder('BTC', $this->buyAmount, $buyPrice);
-
             $this->coinspot->sellOrder('BTC', $this->sellAmount, $sellPrice);
         }
     }
 
-    private function canTrade()
+    private function canTrade($buyPrice)
     {
-        $balance = $this->coinspot->myBalances()['balance'];
+        $balance = $this->coinspot->availableBalances();
 
-        $availableFunds = $balance['aud'] >= $this->buyAmount ?: false;
+        $availableFunds = $balance['aud'] >= ($buyPrice * $this->buyAmount) ?: false;
         $availableCoins = $balance['btc'] >= $this->sellAmount ?: false;
 
         return $availableFunds && $availableCoins;
