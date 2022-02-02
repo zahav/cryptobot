@@ -1,5 +1,5 @@
 {
-    "name": "zahav/zahav-laravel",
+    "name": "zahav/cryptobot",
     "type": "library",
     "description": "Free, open source crypto trading bot for Laravel.",
     "license": "MIT",
