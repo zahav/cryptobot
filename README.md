@@ -9,7 +9,7 @@ It follows a conservative trading strategy and supports the [Coinspot](https://w
 Add zahav/zahav-laravel to your composer.json:
 
 ```php
-composer require "zahav/zahav-laravel"
+composer require "zahav/cryptobot"
 ```
 
 Register our service provider in `config/app.php`, within the `providers` array:
